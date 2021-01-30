@@ -1,10 +1,10 @@
 {
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "postgres",
-  "password": "docker",
-  "database": "gobarber",
+  "type": "mysql",
+  "host": "z3iruaadbwo0iyfp.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+  "port": 3306,
+  "username": "g61lt1t391rg7k12",
+  "password": "aipia1liemhzujgd",
+  "database": "yl4okugmvg9q3mog",
   "entities": [
     "./src/modules/**/typeorm/entities/*.ts"
   ],

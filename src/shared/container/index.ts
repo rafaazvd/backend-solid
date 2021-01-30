@@ -1,14 +1,15 @@
 import { container } from 'tsyringe';
 
-import '@modules/users/providers';
-import './providers';
-import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import UsersRepository from '../../modules/users/infra/typeorm/repositories/UsersRepository';
-import AppointmentsRepository from '../../modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
+import IProductRepository from '@modules/products/repositories/IProductsRepository';
+import IApiKeysRepository from '@modules/apikey/repositories/IApiKeysRepository';
+import ProductsRepository from '../../modules/products/infra/typeorm/repositories/ProductsRepository';
+import ApiKeysRepository from '../../modules/apikey/infra/typeorm/repositories/ApiKeysRepository';
 
-container.registerSingleton<IAppointmentRepository>(
-  'Appointments',
-  AppointmentsRepository,
+container.registerSingleton<IProductRepository>(
+  'Products',
+  ProductsRepository,
 );
-container.registerSingleton<IUsersRepository>('Users', UsersRepository);
+container.registerSingleton<IApiKeysRepository>(
+  'ApiKeys',
+  ApiKeysRepository,
+);

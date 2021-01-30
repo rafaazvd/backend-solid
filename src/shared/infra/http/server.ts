@@ -5,18 +5,15 @@ import 'express-async-errors';
 import cors from 'cors';
 
 import routes from './routes';
-import uploadConfig from '../../../config/upload';
 import AppError from '../../errors/AppError';
 import '../../container';
 
 import '../typeorm';
-// import '@shared/container';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.directory));
 app.use(routes);
 
 app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
@@ -35,5 +32,5 @@ app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
 });
 
 app.listen(3333, () => {
-  console.log('hi dev!');
+  console.log('serve on!');
 });
