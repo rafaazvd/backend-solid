@@ -74,7 +74,7 @@ export default class ProductsControllers {
 
   public async index(req: Request, res: Response): Promise<Response> {
 
-    const products = await this.productsRepository.find()
+    const products = this.productsRepository.find();
 
     return res.json(products);
   }
