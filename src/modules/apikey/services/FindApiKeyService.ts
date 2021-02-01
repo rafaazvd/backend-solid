@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
 import ApiKey from '../infra/typeorm/entities/ApiKey';
-import IApikey from '../dtos/ICreateApiKeyDTO';
 import IApiKeysRepository from '../repositories/IApiKeysRepository';
 
 @injectable()
@@ -11,13 +10,9 @@ class CreateApiKeyService {
     private apikeysRepository: IApiKeysRepository,
   ) {}
 
-  public async execute({
-    client,
-  }: IApikey): Promise<ApiKey> {
+  public async execute(key: string): Promise<ApiKey> {
 
-    const apikey = await this.apikeysRepository.create({
-      client,
-    });
+    const apikey = await this.apikeysRepository.findOne(key);
 
     return apikey;
   }

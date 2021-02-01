@@ -1,9 +1,9 @@
-import FakeAppointmentRepository from '../repositories/fakes/FakeProductRepository';
+import FakeProductRepository from '../repositories/fakes/FakeProductRepository';
 import CreateProductService from './CreateProductService';
 
 describe('CreateProduct', () => {
   it('shold be able to create a news products', async () => {
-    const fakeAProductRepository = new FakeAppointmentRepository();
+    const fakeAProductRepository = new FakeProductRepository();
     const createProduct = new CreateProductService(
       fakeAProductRepository,
     );

@@ -4,6 +4,7 @@ import { uuid } from 'uuidv4';
 
 
 import CreateApiKeyService from '../../../services/CreateApiKeyService';
+import FindApiKeyService from '../../../services/FindApiKeyService';
 import IApiKeysRepository from '../../../repositories/IApiKeysRepository';
 
 @injectable()
@@ -27,14 +28,11 @@ export default class ApikeyController {
     });
     return res.json(apiKey);
   }
-  public async findOne(req: Request, res: Response): Promise<Response> {
-    const {
-      client,
-     } = req.body;
+  public async findOne(key: string): Promise<any> {
 
-    const createApiKey = container.resolve(CreateApiKeyService);
-     const apikey = await this.apikeysRepository.findOne(client);
-     return res.json(apikey);
+    const findApiKey = container.resolve(FindApiKeyService);
+     const apikey = await findApiKey.execute(key);
+     return apikey;
   }
 
 

@@ -8,7 +8,7 @@ interface IRequest {
 }
 
 @injectable()
-class UpdateProductService {
+class FindProductService {
   constructor(
     @inject('Products')
     private productsRepository: IProductsRepository,
@@ -16,8 +16,9 @@ class UpdateProductService {
 
   public async execute({ id }: IRequest): Promise<Product> {
 
-    const product = await this.productsRepository.delete({id});
+    const product = await this.productsRepository.findOne(id);
+
     return product;
   }
 }
-export default UpdateProductService;
+export default FindProductService;

@@ -1,11 +1,9 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IProductsRepository from '@modules/products/repositories/IProductsRepository';
 import ICreateProdutcsDTO from '@modules/products/dtos/ICreateProdutcsDTO';
+import IProductsRepository from '../../../repositories/IProductsRepository';
 import AppError from '../../../../../shared/errors/AppError';
-
 import Product from '../entities/Products';
-
 
 interface IUpdateProdutcs {
   id: string;
@@ -48,7 +46,12 @@ class ProductsRepository implements IProductsRepository {
     await this.ormRepository.save(product);
     return product;
   }
-
+  private removeUndefinedProperties (obj: Record<string, unknown>): Record<string, unknown> {
+    const newObj = Object.fromEntries(
+      Object.entries(obj).filter(([, value]) => value !== undefined),
+    );
+    return newObj;
+  }
   public async update({
     id,
     title,
@@ -60,7 +63,23 @@ class ProductsRepository implements IProductsRepository {
     price,
     rating,
   }: IUpdateProdutcs): Promise<Product> {
-    const product = this.ormRepository.update({ id }, {
+    const updatedProduct = await this.ormRepository.findOne({ id });
+
+    if(!updatedProduct) {
+      throw new AppError('this product does not exist');
+    }
+
+    // title ? updatedProduct.title = title: null;
+    // type ? updatedProduct.type = type: null;
+    // description ? updatedProduct.description = description: null;
+    // filename ? updatedProduct.filename = filename: null;
+    // height ? updatedProduct.height = height: null;
+    // width ? updatedProduct.width = width: null;
+    // price ? updatedProduct.price = price: null;
+    // rating ? updatedProduct.rating = rating: null;
+
+    const valuesToUpdate = this.removeUndefinedProperties({
+      id,
       title,
       type,
       description,
@@ -69,14 +88,10 @@ class ProductsRepository implements IProductsRepository {
       width,
       price,
       rating,
-    });
-    const updatedProduct = await this.ormRepository.findOne(id);
+    })
+    Object.assign(updatedProduct, valuesToUpdate)
+    return this.ormRepository.save(updatedProduct);
 
-    if(!updatedProduct) {
-      throw new AppError('this product does not exist');
-    }
-
-    return updatedProduct;
   }
 
   public async find(): Promise<Product[]> {
@@ -88,7 +103,7 @@ class ProductsRepository implements IProductsRepository {
 
   public async findOne(id: string): Promise<Product> {
 
-    const products = await this.ormRepository.findOne({ id });
+    const products = await this.ormRepository.findOne(id);
     if(!products) {
       throw new AppError('this product does not exist');
     }
@@ -98,9 +113,14 @@ class ProductsRepository implements IProductsRepository {
   public async delete({
     id,
   }: IUpdateProdutcs): Promise<any> {
-    const product = this.ormRepository.delete(id);
 
-    return product;
+    const deleteProduct = await this.ormRepository.findOne({ id });
+    if(!deleteProduct) {
+      throw new AppError('this product does not exist');
+    }
+    await this.ormRepository.delete(deleteProduct);
+
+    return deleteProduct;
   }
 
 }

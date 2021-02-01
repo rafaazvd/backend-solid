@@ -9,7 +9,7 @@ import {
 
 @Entity('apikeys')
 class ApiKey {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   key: string;
 
   @Column()

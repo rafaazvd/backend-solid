@@ -3,21 +3,19 @@ import { inject, injectable } from 'tsyringe';
 import Product from '../infra/typeorm/entities/Products';
 import IProductsRepository from '../repositories/IProductsRepository';
 
-interface IRequest {
-  id: string;
-}
 
 @injectable()
-class UpdateProductService {
+class ListProductService {
   constructor(
     @inject('Products')
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute({ id }: IRequest): Promise<Product> {
+  public async execute(): Promise<Product[]> {
 
-    const product = await this.productsRepository.delete({id});
+    const product = await this.productsRepository.find();
+
     return product;
   }
 }
-export default UpdateProductService;
+export default ListProductService;

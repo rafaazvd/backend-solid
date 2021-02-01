@@ -1,11 +1,11 @@
-import FakeAppointmentRepository from '../repositories/fakes/FakeProductRepository';
+import FakeProductRepository from '../repositories/fakes/FakeProductRepository';
 import DeleteProductService from './DeleteProductService';
 import CreateProductService from './CreateProductService';
 import { id } from 'date-fns/locale';
 
 describe('DeleteProduct', () => {
   it('shold be able to delete a product', async () => {
-    const fakeAProductRepository = new FakeAppointmentRepository();
+    const fakeAProductRepository = new FakeProductRepository();
     const createProduct = new CreateProductService(
       fakeAProductRepository,
     );
@@ -22,7 +22,7 @@ describe('DeleteProduct', () => {
     const deleteProduct = new DeleteProductService(
       fakeAProductRepository,
     );
-    const productDelete = await deleteProduct.execute({
+    await deleteProduct.execute({
       id: product.id,
     });
     const findProduct = await fakeAProductRepository.findOne(product.id);

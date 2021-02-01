@@ -1,5 +1,5 @@
 import { getRepository, Repository } from 'typeorm';
-import  { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 import IApiKeysRepository from '@modules/apikey/repositories/IApiKeysRepository';
 import ICreateApiKeyDTO from '@modules/apikey/dtos/ICreateApiKeyDTO';
@@ -17,8 +17,10 @@ class ApiKeysRepository implements IApiKeysRepository {
   public async create({
     client,
   }: ICreateApiKeyDTO): Promise<ApiKey> {
+    const key = uuidv4();
+
     const apikey = this.ormRepository.create({
-      key: uuid(),
+      key,
       client,
     });
     await this.ormRepository.save(apikey);
@@ -26,10 +28,8 @@ class ApiKeysRepository implements IApiKeysRepository {
     return apikey;
   }
 
-  public async findOne({
-    client,
-  }: ICreateApiKeyDTO): Promise<ApiKey> {
-    const apikey = await this.ormRepository.findOne({where: client});
+  public async findOne(key: string): Promise<ApiKey> {
+    const apikey = await this.ormRepository.findOne({ key });
     if (!apikey) {
       throw new AppError('ApiKey expired!')
     }

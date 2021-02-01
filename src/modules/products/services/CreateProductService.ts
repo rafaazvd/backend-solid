@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
+var fs = require("fs");
 
-import Product from '../infra/typeorm/entities/Products';
 import IProduct from '../dtos/ICreateProdutcsDTO';
 import IProductsRepository from '../repositories/IProductsRepository';
 
@@ -11,29 +11,32 @@ class CreateProductService {
     private productsRepository: IProductsRepository,
   ) {}
 
-  public async execute({
-    title,
-    type,
-    description,
-    filename,
-    height,
-    width,
-    price,
-    rating,
-  }: IProduct): Promise<Product> {
+  public async execute({file}: any): Promise<any> {
+    const jsonData = fs.readFileSync(file.path);
 
-    const product = await this.productsRepository.create({
-      title,
-      type,
-      description,
-      filename,
-      height,
-      width,
-      price,
-      rating,
-    });
+    const array = JSON.parse(jsonData);
+    try {
+      await Promise.all(
+      array.map(async (product: IProduct) => {
+        await this.productsRepository.create(product);
+      }),
+    );
+    return 'produtos cadastrados';
+    } catch (error) {
+      return error;
+    }
 
-    return product;
+
+    // const product = await this.productsRepository.create({
+    //   title,
+    //   type,
+    //   description,
+    //   filename,
+    //   height,
+    //   width,
+    //   price,
+    //   rating,
+    // });
   }
 }
 export default CreateProductService;

@@ -1,4 +1,4 @@
 export default interface ICreateApiKeyDTO {
-  key: string;
+  key?: string;
   client: string;
 }

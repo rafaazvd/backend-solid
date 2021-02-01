@@ -8,7 +8,7 @@ routes.use('/apikeys', apikeysRouter);
 
 routes.use('/products', handleAccessToken, productsRouter);
 
-// routes.use('/', async (res: Response, req: Request) => {
-//   return res.status(200).json({msg : 'REST WebAPI Challenge 20200630 Running'})
-// });
+routes.get('/', async (request, response) => {
+  return response.status(200).json({msg : 'REST WebAPI Challenge 20200630 Running'})
+});
 export default routes;
